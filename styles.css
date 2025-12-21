@@ -1,0 +1,167 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100dvh;
+  display: grid;
+  place-content: center;
+  background-color: rgb(247, 221, 91);
+  /* background-image: url(images/patchwork2.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover; */
+}
+
+.letter-container {
+  position: relative;
+  min-width: 340px;
+  height: 268px;
+  /* cursor: pointer; */
+}
+
+.shake {
+  animation: letter-shake 2s ease infinite;
+}
+
+.shake-end {
+  animation: letter-shake-end 1s ease-out forwards;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.letter-front,
+.letter-front-opened {
+  transition: 1s ease;
+  width: 100%;
+}
+
+.letter-front {
+  z-index: -9999;
+  transform: scaleY(1.1);
+}
+
+.letter-front-opened {
+  transform: scaleY(1.09);
+  top: 10px;
+}
+
+.seal {
+  z-index: 999;
+  width: 40px;
+  top: 100px;
+  right: 140px;
+  transition: 0.8s ease;
+}
+
+.seal-removed {
+  top: 50px;
+}
+
+.flap {
+  width: 100%;
+  top: -9px;
+  transform: scaleX(0.95);
+  transition: opacity 0.8s ease;
+}
+
+.flap-removed {
+  top: -40px;
+  transform: rotate(-14deg);
+  transition: 0.8s ease;
+}
+
+.paper {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 100px;
+  top: 60px;
+  left: 20px;
+  padding: 24px;
+  background-color: white;
+  border: 3px solid black;
+  transition: 3s ease;
+}
+
+.paper-little-rised {
+  height: 250px;
+}
+
+.paper-fully-rised {
+  animation: paper-out 1.3s ease forwards;
+}
+
+.paper-little-rised,
+.paper-fully-raised {
+  top: -100px;
+}
+
+.paper-button-container {
+  margin-top: auto;
+  transition: 1s ease;
+}
+
+.paper-button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.messages {
+  display: grid;
+  place-content: center;
+  height: 100px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  transition: 0.8s ease;
+}
+
+@keyframes letter-shake {
+  0% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-8deg);
+  }
+  100% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes letter-shake-end {
+  from {
+    transform: rotate(var(--current-rotation));
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes paper-out {
+  50% {
+    top: -300px;
+  }
+
+  65% {
+    height: 340px;
+  }
+
+  100% {
+    z-index: 999;
+    top: -100px;
+    height: 524px;
+  }
+}

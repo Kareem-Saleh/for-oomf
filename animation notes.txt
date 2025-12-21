@@ -1,0 +1,24 @@
+Original state:
+
+Seal - shown
+Flap - shown
+Letter front- shown
+Paper - hidden
+Letter front opened - hidden
+
+
+Order of the letter opening animation:
+
+1. Click to make seal come off
+2. Flap opens
+3. Front letter to cover paper goes over
+4. Paper reveals and slides up slightly
+5. Click to pull paper up and over letter and lengthens
+
+In terms of classes:
+
+1. Seal add "hidden"
+2. Flap add "hidden"
+3. Front letter opened remove "hidden"
+4. Paper add "hidden"
+5. 

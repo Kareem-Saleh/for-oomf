@@ -89,6 +89,7 @@ body {
   padding: 24px;
   background-color: white;
   border: 3px solid black;
+  font-family: "Times New Roman", Times, serif;
   transition: 3s ease;
 }
 
@@ -106,8 +107,9 @@ body {
 }
 
 .paper-button-container {
+  display: flex;
+  justify-content: space-between;
   margin-top: auto;
-  transition: 1s ease;
 }
 
 .paper-button {
@@ -116,6 +118,11 @@ body {
   border: none;
   padding: 5px;
   cursor: pointer;
+  transition: 0.75s ease;
+}
+
+.paper-button.hidden {
+  cursor: default;
 }
 
 .messages {
@@ -127,6 +134,15 @@ body {
   font-size: 2rem;
   font-weight: bold;
   transition: 0.8s ease;
+}
+
+.address {
+  margin-bottom: 17px;
+}
+
+.paper p {
+  margin-bottom: 10px;
+  line-height: 23px;
 }
 
 @keyframes letter-shake {

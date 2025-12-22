@@ -14,18 +14,24 @@ const p1 = document.querySelector(".p1");
 const p2 = document.querySelector(".p2");
 const p3 = document.querySelector(".p3");
 
-// function typeWriter(text, element, speed) {
-//   for (let i = 0; i < text.length; i++) {
-//     setTimeout(() => {
-//       element.innerHTML += text[i];
-//     }, i * speed);
-//   }
-// }
+// buttons
+const back = document.querySelector(".back");
+const next = document.querySelector(".next");
+
+// letter text
+const letterMessages = [
+  {
+    text: "I was initially just going to send you a letter for you to read when you came back from Japan but I felt that would be too long and I do want you to read something heartfelt with my thoughts. Thats why I decided to make this little web-letter thing so you could read my letter even though you're on the other side of the globe because I love my baby no matter where she is and I hope it reaches you 届けええええ #ok. #warning this might be quite long cos unlike paper I don't have a limit on how many words I can fit LOL #warning.",
+    element: p1,
+    speed: 15,
+    pauseAfter: 500,
+  },
+];
 
 function typeWriter(text, element, speed) {
   return new Promise((resolve) => {
     let i = 0;
-    
+
     function type() {
       if (i < text.length) {
         element.innerHTML += text[i];
@@ -35,20 +41,87 @@ function typeWriter(text, element, speed) {
         resolve();
       }
     }
-    
+
     type();
   });
 }
 
-async function typeSequentially(typewriterConfigs) {
-  for (const config of typewriterConfigs) {
-    let promise = typeWriter(config.text, config.element, config.speed);
-    
-    if (config.pauseAfter) {
-      await new Promise(resolve => setTimeout(resolve, config.pauseAfter));
+let firstPageTurned = false;
+let pageLoading = false;
+let currentPage = 0;
+
+async function typeSequentially(text) {
+  pageLoading = true;
+
+  if (Array.isArray(text)) {
+    for (const message in text) {
+      await typeWriter(message.text, message.element, message.speed);
+      pageLoading = false;
+
+      if (message.pauseAfter) {
+        await new Promise((resolve) => setTimeout(resolve, message.pauseAfter));
+      }
+    }
+  } else {
+    await typeWriter(text.text, text.element, text.speed);
+    pageLoading = false;
+
+    if (text.pauseAfter) {
+      await new Promise((resolve) => setTimeout(resolve, text.pauseAfter));
     }
   }
+
+  if (firstPageTurned) {
+    return;
+  }
+
+  firstPageTurned = true;
+  next.classList.remove("hidden");
 }
+
+next.addEventListener("click", () => {
+  if (pageLoading) {
+    return;
+  }
+
+  if (currentPage === 0) {
+    back.classList.toggle("hidden");
+  }
+
+  console.log(`Current page: ${currentPage}`);
+
+  address.innerText = "";
+  p1.innerText = "";
+  p2.innerText = "";
+  p3.innerText = "";
+
+  currentPage += 1;
+});
+
+back.addEventListener("click", () => {
+  if (pageLoading) {
+    return;
+  }
+
+  if (currentPage === 0) {
+    back.classList.toggle("hidden");
+  } else {
+    back.classList.remove("hidden");
+  }
+
+  console.log(`Current page: ${currentPage}`);
+
+  address.innerText = "";
+  p1.innerText = "";
+  p2.innerText = "";
+  p3.innerText = "";
+
+  if (currentPage === 0) {
+    return;
+  }
+
+  currentPage -= 1;
+});
 
 function stopShake() {
   const computedStyle = window.getComputedStyle(letterContainer);
@@ -71,14 +144,10 @@ function removeSeal() {
   seal.classList.add("seal-removed");
 }
 
-function revealPaper() {
+async function revealPaper() {
   paper.classList.remove("hidden");
   paper.classList.add("paper-little-rised");
   letterFrontOpened.classList.remove("hidden");
-
-  setTimeout(() => {
-    typeWriter("To Elouise,", address, 150);
-  }, 1500);
 
   setTimeout(() => {
     letterFront.classList.add("hidden");
@@ -87,55 +156,12 @@ function revealPaper() {
   }, 4000);
 
   setTimeout(() => {
-    typeWriter(
-      "I was initially just going to send you a letter for you to read when you came back from Japan but I felt that would be too long and I do want you to read something heartfelt with my thoughts. Thats why I decided to make this little web-letter thing so you could read my letter even though you're on the other side of the globe because I love my baby no matter where she is and I hope it reaches you 届けええええ #ok. #warning this might be quite long cos unlike paper I don't have a limit on how many words I can fit LOL #warning.",
-      p1,
-      15
-    );
-  }, 5500);
-
-  setTimeout(() => {
-    typeWriter(
-      "I was initially just going to send you a letter for you to read when you came back from Japan but I felt that would be too long and I do want you to read something heartfelt with my thoughts. Thats why I decided to make this little web-letter thing so you could read my letter even though you're on the other side of the globe because I love my baby no matter where she is and I hope it reaches you 届けええええ #ok. #warning this might be quite long cos unlike paper I don't have a limit on how many words I can fit LOL #warning.",
-      p2,
-      15
-    );
-  }, 6500);
-
-  // Initial animations
-  // letterFront.classList.add("hidden");
-  // letterFrontOpened.classList.add("hidden");
-  // paper.classList.add("paper-fully-rised");
-  // setTimeout(() => {
-  //   typeWriter("To Elouise,", address, 150).then(() => {
-  //     setTimeout(() => {
-  //       // After animations, start sequential typing
-  //       typeSequentially([
-  //         {
-  //           text: "I was initially just going to send you a letter for you to read when you came back from Japan but I felt that would be too long and I do want you to read something heartfelt with my thoughts. Thats why I decided to make this little web-letter thing so you could read my letter even though you're on the other side of the globe because I love my baby no matter where she is and I hope it reaches you 届けええええ #ok. #warning this might be quite long cos unlike paper I don't have a limit on how many words I can fit LOL #warning.",
-  //           element: p1,
-  //           speed: 15,
-  //           pauseAfter: 500 // Optional pause after this paragraph
-  //         },
-  //         {
-  //           text: "Your second paragraph text here...",
-  //           element: p2,
-  //           speed: 15,
-  //           pauseAfter: 500
-  //         },
-  //         {
-  //           text: "Third paragraph text here...",
-  //           element: p3,
-  //           speed: 15
-  //         }
-  //       ]);
-  //     }, 2500); // Wait 2.5 seconds after address typing
-  //   });
-  // }, 1500);
-
-  setTimeout(() => {
-    paperButtonContainer.classList.remove("hidden");
-  }, 10000);
+    typeWriter("To Elouise,", address, 150).then(() => {
+      setTimeout(() => {
+        typeSequentially(letterMessages[0]);
+      }, 2500);
+    });
+  }, 1500);
 }
 
 function removeFlap() {
@@ -146,6 +172,7 @@ function removeFlap() {
   }, 200);
 }
 
+// beginning flow
 let letterOpened = false;
 
 letterContainer.addEventListener("click", () => {

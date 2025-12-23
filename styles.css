@@ -9,17 +9,12 @@ body {
   display: grid;
   place-content: center;
   background-color: rgb(247, 221, 91);
-  /* background-image: url(images/patchwork2.jpg);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover; */
 }
 
 .letter-container {
   position: relative;
   min-width: 340px;
   height: 268px;
-  /* cursor: pointer; */
 }
 
 .shake {
@@ -121,17 +116,24 @@ body {
   transition: 0.75s ease;
 }
 
-.paper-button.hidden {
+.paper-button.hidden,
+.blow-cake.hidden {
   cursor: default;
 }
 
+.paper-button.disabled {
+  background-color: rgb(248, 90, 90);
+}
+
 .messages {
-  display: grid;
-  place-content: center;
+  position: absolute;
+  text-align: center;
+  bottom: -100px;
   height: 100px;
+  width: 100%;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: bold;
   transition: 0.8s ease;
 }
@@ -143,6 +145,17 @@ body {
 .paper p {
   margin-bottom: 10px;
   line-height: 23px;
+}
+
+.blow-cake {
+  border-radius: 5px;
+  padding-inline: 8px;
+  padding-block: 10px;
+  border: none;
+}
+
+.none {
+  display: none;
 }
 
 @keyframes letter-shake {
@@ -168,16 +181,14 @@ body {
 
 @keyframes paper-out {
   50% {
-    top: -300px;
-  }
-
-  65% {
-    height: 340px;
+    top: -100px;
   }
 
   100% {
     z-index: 999;
-    top: -100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     height: 524px;
   }
 }

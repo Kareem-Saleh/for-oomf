@@ -17,17 +17,62 @@ const p3 = document.querySelector(".p3");
 // buttons
 const back = document.querySelector(".back");
 const next = document.querySelector(".next");
+const blowCake = document.querySelector(".blow-cake");
 
 // letter text
 const letterMessages = [
   {
+    text: "To Elouise,",
+    element: address,
+    speed: 150,
+    pauseAfter: 1500,
+  },
+  {
     text: "I was initially just going to send you a letter for you to read when you came back from Japan but I felt that would be too long and I do want you to read something heartfelt with my thoughts. Thats why I decided to make this little web-letter thing so you could read my letter even though you're on the other side of the globe because I love my baby no matter where she is and I hope it reaches you 届けええええ #ok. #warning this might be quite long cos unlike paper I don't have a limit on how many words I can fit LOL #warning.",
     element: p1,
-    speed: 15,
-    pauseAfter: 500,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "This is the first paragraph on page 2",
+    element: p1,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "This is the second paragraph on page 2",
+    element: p2,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "This is the first paragraph on page 3",
+    element: p1,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "This is the second paragraph on page 3333333333333333",
+    element: p2,
+    speed: 5,
+    pauseAfter: 100,
   },
 ];
 
+// pages
+const page1 = letterMessages.slice(0, 2);
+const page2 = letterMessages.slice(2, 4);
+const page3 = letterMessages.slice(4, 6);
+const pages = [page1, page2, page3];
+
+// states
+let letterOpened = false;
+let firstPageTurned = false;
+let pageLoading = false;
+let currentPage = 0;
+let letterFinished = false;
+
+// typing functions
 function typeWriter(text, element, speed) {
   return new Promise((resolve) => {
     let i = 0;
@@ -46,29 +91,23 @@ function typeWriter(text, element, speed) {
   });
 }
 
-let firstPageTurned = false;
-let pageLoading = false;
-let currentPage = 0;
-
 async function typeSequentially(text) {
   pageLoading = true;
+  back.classList.add("disabled");
+  next.classList.add("disabled");
 
   if (Array.isArray(text)) {
-    for (const message in text) {
+    for (const message of text) {
       await typeWriter(message.text, message.element, message.speed);
-      pageLoading = false;
 
       if (message.pauseAfter) {
         await new Promise((resolve) => setTimeout(resolve, message.pauseAfter));
       }
     }
-  } else {
-    await typeWriter(text.text, text.element, text.speed);
-    pageLoading = false;
 
-    if (text.pauseAfter) {
-      await new Promise((resolve) => setTimeout(resolve, text.pauseAfter));
-    }
+    pageLoading = false;
+    back.classList.remove("disabled");
+    next.classList.remove("disabled");
   }
 
   if (firstPageTurned) {
@@ -79,23 +118,34 @@ async function typeSequentially(text) {
   next.classList.remove("hidden");
 }
 
+// button event listeners
 next.addEventListener("click", () => {
   if (pageLoading) {
     return;
   }
 
-  if (currentPage === 0) {
-    back.classList.toggle("hidden");
+  if (currentPage + 1 === pages.length) {
+    return;
   }
-
-  console.log(`Current page: ${currentPage}`);
 
   address.innerText = "";
   p1.innerText = "";
   p2.innerText = "";
   p3.innerText = "";
 
+  if (currentPage + 1 === pages.length - 1) {
+    next.classList.add("hidden");
+    blowCake.classList.remove("hidden");
+    letterFinished = true;
+  }
+
+  if (currentPage + 1 !== 0) {
+    back.classList.remove("hidden");
+  }
+
   currentPage += 1;
+  typeSequentially(pages[currentPage]);
+  console.log(`Current page: ${currentPage}`);
 });
 
 back.addEventListener("click", () => {
@@ -104,25 +154,36 @@ back.addEventListener("click", () => {
   }
 
   if (currentPage === 0) {
-    back.classList.toggle("hidden");
-  } else {
-    back.classList.remove("hidden");
+    return;
   }
-
-  console.log(`Current page: ${currentPage}`);
 
   address.innerText = "";
   p1.innerText = "";
   p2.innerText = "";
   p3.innerText = "";
 
-  if (currentPage === 0) {
-    return;
+  if (currentPage - 1 === 0) {
+    back.classList.add("hidden");
+  }
+
+  if (currentPage === pages.length - 1) {
+    next.classList.remove("hidden");
   }
 
   currentPage -= 1;
+  typeSequentially(pages[currentPage]);
+  console.log(`Current page: ${currentPage}`);
 });
 
+blowCake.addEventListener("click", () => {
+  if (!letterFinished) {
+    return;
+  }
+
+  console.log("Let's blow the cakeeeeeeee :tongue: :tongue:");
+  letterContainer.classList.add("none");
+});
+// letter animations
 function stopShake() {
   const computedStyle = window.getComputedStyle(letterContainer);
   const matrix = new DOMMatrixReadOnly(computedStyle.transform);
@@ -156,11 +217,7 @@ async function revealPaper() {
   }, 4000);
 
   setTimeout(() => {
-    typeWriter("To Elouise,", address, 150).then(() => {
-      setTimeout(() => {
-        typeSequentially(letterMessages[0]);
-      }, 2500);
-    });
+    typeSequentially(pages[0]);
   }, 1500);
 }
 
@@ -173,13 +230,17 @@ function removeFlap() {
 }
 
 // beginning flow
-let letterOpened = false;
+const hint = setTimeout(() => {
+  messages.classList.remove("hidden");
+}, 2000);
 
 letterContainer.addEventListener("click", () => {
   if (letterOpened) {
     return;
   }
+
   letterOpened = true;
+  clearTimeout(hint);
   stopShake();
   setTimeout(removeSeal, 1200);
   setTimeout(removeFlap, 2400);

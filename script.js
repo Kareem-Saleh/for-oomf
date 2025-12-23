@@ -1,5 +1,5 @@
 // elements
-const messages = document.querySelector(".messages");
+const messages = document.querySelector(".hint");
 const letterContainer = document.querySelector(".letter-container");
 const seal = document.querySelector(".seal");
 const flap = document.querySelector(".flap");
@@ -108,6 +108,11 @@ async function typeSequentially(text) {
     pageLoading = false;
     back.classList.remove("disabled");
     next.classList.remove("disabled");
+
+    if (currentPage === pages.length - 1) {
+      blowCake.classList.remove("hidden");
+      letterFinished = true;
+    }
   }
 
   if (firstPageTurned) {
@@ -135,8 +140,8 @@ next.addEventListener("click", () => {
 
   if (currentPage + 1 === pages.length - 1) {
     next.classList.add("hidden");
-    blowCake.classList.remove("hidden");
-    letterFinished = true;
+    // blowCake.classList.remove("hidden");
+    // letterFinished = true;
   }
 
   if (currentPage + 1 !== 0) {
@@ -232,6 +237,7 @@ function removeFlap() {
 // beginning flow
 const hint = setTimeout(() => {
   messages.classList.remove("hidden");
+  messages.classList.add("flash");
 }, 2000);
 
 letterContainer.addEventListener("click", () => {
@@ -241,6 +247,7 @@ letterContainer.addEventListener("click", () => {
 
   letterOpened = true;
   clearTimeout(hint);
+  messages.classList.remove("flash");
   stopShake();
   setTimeout(removeSeal, 1200);
   setTimeout(removeFlap, 2400);

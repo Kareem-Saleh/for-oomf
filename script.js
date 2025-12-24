@@ -28,32 +28,74 @@ const letterMessages = [
     pauseAfter: 1500,
   },
   {
-    text: "I was initially just going to send you a letter for you to read when you came back from Japan but I felt that would be too long and I do want you to read something heartfelt with my thoughts. Thats why I decided to make this little web-letter thing so you could read my letter even though you're on the other side of the globe because I love my baby no matter where she is and I hope it reaches you 届けええええ #ok. #warning this might be quite long cos unlike paper I don't have a limit on how many words I can fit LOL #warning.",
+    text: "HAPPY BIRTHDAY!!!!!!! I was initially just going to send you a letter for you to read when you came back from Japan but I felt that would be too long. I want you to read something heartfelt with my thoughts, especially after receiving your last letter <3333. Thats why I decided to make this web-letter thing so you could read my letter even though you're on the other side of the globe. I love my baby no matter where she is and I hope my feelings reach you 届けええええ #ok.",
     element: p1,
     speed: 5,
     pauseAfter: 100,
   },
   {
-    text: "This is the first paragraph on page 2",
+    text: "#warning this might be quite long cos unlike paper I don't have a limit on how many words I can fit LOL #warning #sorry.",
     element: p1,
     speed: 5,
     pauseAfter: 100,
   },
   {
-    text: "This is the second paragraph on page 2",
+    text: "OOMF IS 18 NOW #WOW #WOAH!!!! I hope that today is an incredibly fun and amazing day and that you are blessed with love from all the people you care about!!! I know that in the past you have said that you didn't want to become 18 but I can assure you that life is still young and you will be able to experience so many good things.",
     element: p2,
     speed: 5,
     pauseAfter: 100,
   },
   {
-    text: "This is the first paragraph on page 3",
+    text: "If you keep your soul and mind youthful and cheery there is nothing to be afraid of <3. May your 18th year on earth be filled with opportunities and excitement!!!! May you grow up healthy and loved and successful on the next part of life!!! Ok... i lowk feel like im giving a prayer BUT BASICALLY I WANT YOU TO FEEL HAPPY AND ENJOY BEING ALIVE FOR ANOTHER YEAR MORE <3333333333!!!!!!!!!1",
     element: p1,
     speed: 5,
     pauseAfter: 100,
   },
   {
-    text: "This is the second paragraph on page 3333333333333333",
+    text: "Sighhhh i miss you so much everyday and i love you so much. Even though I'm on the other side of the planet I want to celebrate with you #sighhhhh",
     element: p2,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "IF I COULD BE WITH YOU ID BE SHOWERING YOU WITH HUGS AND KISSES AND EVERYTHING SIGHHHHHHHHHHHHH",
+    element: p1,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "I can't wait for February to come so we can be together again so I can treat you properly and have lots lots #fun.",
+    element: p2,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "I guess since I have the chance I'll also use this letter to talk about other things too xd. I reallllly wish you had a nice Christmas and that your trip in Japan is super fun. I enjoy it so much when you send me pictures, I feel so included. I'm #remembered <3 <3 <3",
+    element: p3,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "When you send me pics of things you know I like I also feel so blessssssed. Like you're so thoughtful and thinking of me always I feel so loveddd I LOVE YOU SO MUCH.",
+    element: p1,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "Also wishing you and your family an awesome new year!!! Since you're in Japan maybe you will do the shrine visit rituals #thinking #fun!!!",
+    element: p2,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "I hope this letter made you a little happy and smile (and actually worked pls pls pls i beg). I'm sorry I can't be with you to give you a physical present but I hope the feelings behind them are felt.",
+    element: p3,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "WISHING YOU A BEAUTIFUL, MEMORABLE AND AWESOME 18TH BIRTHDAY!!!! AND ALSO THANK YOU FOR MAKING MY ENTIRE YEAR AND MAKING ME HAPPY EVERYDAY. I HOPE 2026 IS A FUN YEAR AND THAT WE CAN BOTH HANG OUT AND BE TOGETHER PLENTYYYY MORE. I LOVE YOU SO MUCH ENJOY UR DAY THANK YOU FOR READING!!!!",
+    element: p3,
     speed: 5,
     pauseAfter: 100,
   },
@@ -63,7 +105,10 @@ const letterMessages = [
 const page1 = letterMessages.slice(0, 2);
 const page2 = letterMessages.slice(2, 4);
 const page3 = letterMessages.slice(4, 6);
-const pages = [page1, page2, page3];
+const page4 = letterMessages.slice(6, 9);
+const page5 = letterMessages.slice(9, 12);
+const page6 = letterMessages.slice(12, 13);
+const pages = [page1, page2, page3, page4, page5, page6];
 
 // states
 let letterOpened = false;

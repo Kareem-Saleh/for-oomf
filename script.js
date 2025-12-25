@@ -7,6 +7,7 @@ const paper = document.querySelector(".paper");
 const letterFront = document.querySelector(".letter-front");
 const letterFrontOpened = document.querySelector(".letter-front-opened");
 const paperButtonContainer = document.querySelector(".paper-button-container");
+const cake = document.querySelector(".cake");
 
 // text containers
 const address = document.querySelector(".address");
@@ -95,7 +96,13 @@ const letterMessages = [
   },
   {
     text: "WISHING YOU A BEAUTIFUL, MEMORABLE AND AWESOME 18TH BIRTHDAY!!!! AND ALSO THANK YOU FOR MAKING MY ENTIRE YEAR AND MAKING ME HAPPY EVERYDAY. I HOPE 2026 IS A FUN YEAR AND THAT WE CAN BOTH HANG OUT AND BE TOGETHER PLENTYYYY MORE. I LOVE YOU SO MUCH ENJOY UR DAY THANK YOU FOR READING!!!!",
-    element: p3,
+    element: p1,
+    speed: 5,
+    pauseAfter: 100,
+  },
+  {
+    text: "(in case u dont notice click the cake looking button pls yay :D)",
+    element: p2,
     speed: 5,
     pauseAfter: 100,
   },
@@ -107,7 +114,7 @@ const page2 = letterMessages.slice(2, 4);
 const page3 = letterMessages.slice(4, 6);
 const page4 = letterMessages.slice(6, 9);
 const page5 = letterMessages.slice(9, 12);
-const page6 = letterMessages.slice(12, 13);
+const page6 = letterMessages.slice(12, 14);
 const pages = [page1, page2, page3, page4, page5, page6];
 
 // states
@@ -185,8 +192,6 @@ next.addEventListener("click", () => {
 
   if (currentPage + 1 === pages.length - 1) {
     next.classList.add("hidden");
-    // blowCake.classList.remove("hidden");
-    // letterFinished = true;
   }
 
   if (currentPage + 1 !== 0) {
@@ -232,6 +237,7 @@ blowCake.addEventListener("click", () => {
 
   console.log("Let's blow the cakeeeeeeee :tongue: :tongue:");
   letterContainer.classList.add("none");
+  cake.classList.remove("hidden");
 });
 // letter animations
 function stopShake() {

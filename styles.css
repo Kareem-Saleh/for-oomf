@@ -16,6 +16,7 @@ body {
   position: relative;
   min-width: 340px;
   height: 268px;
+  transition: 1s ease-out;
 }
 
 .shake {
@@ -227,6 +228,7 @@ body {
   transform: translateX(-50%) translateY(-50%);
   padding-bottom: 140px;
   padding-right: 270px;
+  transition: 2s ease;
 }
 
 .cake {
@@ -241,7 +243,7 @@ body {
 .cake-message {
   width: 100%;
   position: absolute;
-  bottom: -265px;
+  top: -255px;
   text-align: center;
   font-size: 1.75rem;
   font-weight: bold;

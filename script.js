@@ -1,4 +1,4 @@
-// elements
+// letter elements
 const messages = document.querySelector(".hint");
 const letterContainer = document.querySelector(".letter-container");
 const seal = document.querySelector(".seal");
@@ -7,8 +7,12 @@ const paper = document.querySelector(".paper");
 const letterFront = document.querySelector(".letter-front");
 const letterFrontOpened = document.querySelector(".letter-front-opened");
 const paperButtonContainer = document.querySelector(".paper-button-container");
+
+// cake elements
 const cakeContainer = document.querySelector(".cake-container");
 const cake = document.querySelector(".cake");
+const oneCandle = document.querySelector(".candle-one");
+const eightCandle = document.querySelector(".candle-eight");
 
 // text containers
 const address = document.querySelector(".address");
@@ -231,6 +235,8 @@ back.addEventListener("click", () => {
   console.log(`Current page: ${currentPage}`);
 });
 
+// cake blowing
+let cakeLoaded = false;
 blowCake.addEventListener("click", () => {
   if (!letterFinished) {
     return;
@@ -239,7 +245,12 @@ blowCake.addEventListener("click", () => {
   console.log("Let's blow the cakeeeeeeee :tongue: :tongue:");
   letterContainer.classList.add("none");
   cakeContainer.classList.remove("hidden");
+
+  setTimeout(() => {
+    cakeLoaded = true;
+  }, 3000);
 });
+
 // letter animations
 function stopShake() {
   const computedStyle = window.getComputedStyle(letterContainer);
@@ -304,3 +315,103 @@ letterContainer.addEventListener("click", () => {
   setTimeout(removeSeal, 1200);
   setTimeout(removeFlap, 2400);
 });
+
+// mic stuff
+function blowOutCandles() {
+  console.log("detected blow");
+  if (!cakeLoaded) {
+    console.log("cant blow yet");
+
+    return;
+  }
+
+  const candles = [oneCandle, eightCandle];
+  candles.forEach((candle) => {
+    const delay = Math.random() * 1000;
+    setTimeout(() => {
+      candle.classList.add("blown");
+      blown = true;
+    }, delay);
+  });
+
+  setTimeout(() => {
+    const subTitle = document.querySelector(".cake-message");
+    subTitle.textContent = `Yayy! HAVE A FUN DAY TODAY!!!! I LOVE YOU <333`;
+  }, 2000);
+}
+
+async function startMicDetection() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    const source = audioContext.createMediaStreamSource(stream);
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 512;
+
+    source.connect(analyser);
+
+    return analyser;
+  } catch (err) {
+    console.error("Mic access error:", err);
+  }
+}
+
+let analyser;
+let dataArray;
+let blown = false;
+const BLOW_COOLDOWN = 1000;
+
+async function initializeAudio() {
+  analyser = await startMicDetection();
+
+  if (!analyser) {
+    console.error("Failed to initialize audio analyser");
+    return;
+  }
+
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+  detectBlow();
+}
+
+function detectBlow() {
+  if (!analyser) return;
+
+  analyser.getByteFrequencyData(dataArray);
+
+  let highFreqSum = 0;
+  let lowFreqSum = 0;
+
+  const midpoint = dataArray.length / 2;
+
+  for (let i = 0; i < dataArray.length; i++) {
+    if (i < midpoint) {
+      lowFreqSum += dataArray[i];
+    } else {
+      highFreqSum += dataArray[i];
+    }
+  }
+
+  const highAvg = highFreqSum / (dataArray.length / 2);
+  const lowAvg = lowFreqSum / (dataArray.length / 2);
+
+  const ratio = highAvg / (lowAvg + 1);
+
+  const BLOW_RATIO_THRESHOLD = 0.5;
+
+  if (ratio > BLOW_RATIO_THRESHOLD && !blown) {
+    blown = true;
+    blowOutCandles();
+
+    setTimeout(() => {
+      blown = false;
+    }, BLOW_COOLDOWN);
+  }
+
+  requestAnimationFrame(detectBlow);
+}
+
+// Start everything
+initializeAudio();

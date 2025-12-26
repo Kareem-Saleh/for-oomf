@@ -7,6 +7,7 @@ const paper = document.querySelector(".paper");
 const letterFront = document.querySelector(".letter-front");
 const letterFrontOpened = document.querySelector(".letter-front-opened");
 const paperButtonContainer = document.querySelector(".paper-button-container");
+const cakeContainer = document.querySelector(".cake-container");
 const cake = document.querySelector(".cake");
 
 // text containers
@@ -237,7 +238,7 @@ blowCake.addEventListener("click", () => {
 
   console.log("Let's blow the cakeeeeeeee :tongue: :tongue:");
   letterContainer.classList.add("none");
-  cake.classList.remove("hidden");
+  cakeContainer.classList.remove("hidden");
 });
 // letter animations
 function stopShake() {

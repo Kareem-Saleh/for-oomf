@@ -167,6 +167,17 @@ body {
   display: none;
 }
 
+.text-container {
+  height: 390px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.text-container::-webkit-scrollbar {
+  display: none;
+}
+
 @keyframes letter-shake {
   0% {
     transform: rotate(8deg);

@@ -113,6 +113,15 @@ const letterMessages = [
   },
 ];
 
+const testMessages = [
+  {
+    text: "hi",
+    element: address,
+    speed: 100,
+    pauseAfter: 1000,
+  },
+];
+
 // pages
 const page1 = letterMessages.slice(0, 2);
 const page2 = letterMessages.slice(2, 4);
@@ -120,7 +129,9 @@ const page3 = letterMessages.slice(4, 6);
 const page4 = letterMessages.slice(6, 9);
 const page5 = letterMessages.slice(9, 12);
 const page6 = letterMessages.slice(12, 14);
-const pages = [page1, page2, page3, page4, page5, page6];
+const testPage = testMessages.slice(0, 1);
+const pagess = [page1, page2, page3, page4, page5, page6];
+const pages = [testPage];
 
 // states
 let letterOpened = false;
@@ -245,11 +256,36 @@ blowCake.addEventListener("click", () => {
   console.log("Let's blow the cakeeeeeeee :tongue: :tongue:");
   letterContainer.classList.add("none");
   cakeContainer.classList.remove("hidden");
+  document.body.style.backgroundImage = "";
 
+  setTimeout(startRising, 1000);
   setTimeout(() => {
     cakeLoaded = true;
   }, 3000);
 });
+
+function blowOutCandles() {
+  console.log("detected blow");
+  if (!cakeLoaded) {
+    console.log("cant blow yet");
+
+    return;
+  }
+
+  const candles = [oneCandle, eightCandle];
+  candles.forEach((candle) => {
+    const delay = Math.random() * 1000;
+    setTimeout(() => {
+      candle.classList.add("blown");
+      blown = true;
+    }, delay);
+  });
+
+  setTimeout(() => {
+    const subTitle = document.querySelector(".cake-message");
+    subTitle.textContent = `Yayy! HAVE A FUN DAY TODAY!!!! I LOVE YOU <333`;
+  }, 2000);
+}
 
 // letter animations
 function stopShake() {
@@ -297,6 +333,74 @@ function removeFlap() {
   }, 200);
 }
 
+// balloons rising
+const risingDivs = [];
+
+function gaussianRandom(mean = 0.3, stddev = 0.17) {
+  let u = 0,
+    v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  let z = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  return z * stddev + mean;
+}
+
+const balloons = [
+  "images/balloon_blue.png",
+  "images/balloon_green.png",
+  "images/balloon_red.png",
+  "images/balloon_yellow.png",
+];
+
+function createBalloon() {
+  const div = document.createElement("div");
+  div.className = "balloon";
+
+  const left = gaussianRandom() * window.innerWidth;
+
+  div.style.left = `${left}px`;
+  div.style.bottom = "-80px";
+
+  const randomImage = balloons[Math.floor(Math.random() * balloons.length)];
+
+  const img = document.createElement("img");
+  img.src = randomImage;
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "contain";
+
+  div.appendChild(img);
+
+  div.classList.add("balloon");
+
+  document.body.appendChild(div);
+  risingDivs.push(div);
+
+  div.addEventListener("animationend", () => {
+    div.remove();
+    const index = risingDivs.indexOf(div);
+    if (index > -1) {
+      risingDivs.splice(index, 1);
+    }
+  });
+}
+
+function startRising() {
+  createBalloon();
+
+  function scheduleNext() {
+    const delay = Math.random() * 1000 + 1000;
+    setTimeout(() => {
+      createBalloon();
+      scheduleNext();
+    }, delay);
+  }
+
+  scheduleNext();
+
+  setTimeout(scheduleNext, 800);
+}
+
 // beginning flow
 const hint = setTimeout(() => {
   messages.classList.remove("hidden");
@@ -317,29 +421,6 @@ letterContainer.addEventListener("click", () => {
 });
 
 // mic stuff
-function blowOutCandles() {
-  console.log("detected blow");
-  if (!cakeLoaded) {
-    console.log("cant blow yet");
-
-    return;
-  }
-
-  const candles = [oneCandle, eightCandle];
-  candles.forEach((candle) => {
-    const delay = Math.random() * 1000;
-    setTimeout(() => {
-      candle.classList.add("blown");
-      blown = true;
-    }, delay);
-  });
-
-  setTimeout(() => {
-    const subTitle = document.querySelector(".cake-message");
-    subTitle.textContent = `Yayy! HAVE A FUN DAY TODAY!!!! I LOVE YOU <333`;
-  }, 2000);
-}
-
 async function startMicDetection() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({

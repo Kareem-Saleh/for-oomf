@@ -5,12 +5,19 @@
 }
 
 body {
-  min-height: 100dvh;
+  height: 100dvh;
   position: relative;
   display: grid;
   place-content: center;
   background-color: rgb(255, 255, 255);
-  background-image: url(images/patchwork.jpg);
+  /* background-image: url(images/patchwork.jpg); */
+}
+
+.background {
+  position: fixed;
+  width: 100dvw;
+  height: 100dvh;
+  z-index: -999;
 }
 
 .letter-container {
@@ -203,6 +210,42 @@ body {
   }
 }
 
+@keyframes shake2 {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(-10deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  /* 55% {
+    transform: rotate(180deg);
+  } */
+  65% {
+    transform: rotate(360deg);
+  }
+  85% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(-10deg);
+  }
+}
+
 @keyframes letter-shake-end {
   from {
     transform: rotate(var(--current-rotation));
@@ -283,6 +326,29 @@ body {
   right: -70px;
   rotate: 15deg;
   width: 55px;
+}
+
+.ren {
+  position: absolute;
+  bottom: -70px;
+  right: -105px;
+  width: 30px;
+}
+
+.makto {
+  position: absolute;
+  bottom: -70px;
+  right: -130px;
+  rotate: -15deg;
+  width: 30px;
+}
+
+.shake2 {
+  animation: shake2 0.75s ease infinite;
+}
+
+.spin {
+  animation: spin 5s ease infinite;
 }
 
 .balloon {

@@ -13,6 +13,7 @@ const cakeContainer = document.querySelector(".cake-container");
 const cake = document.querySelector(".cake");
 const oneCandle = document.querySelector(".candle-one");
 const eightCandle = document.querySelector(".candle-eight");
+const cakeMessage = document.querySelector(".cake-message");
 
 // text containers
 const address = document.querySelector(".address");
@@ -130,8 +131,8 @@ const page4 = letterMessages.slice(6, 9);
 const page5 = letterMessages.slice(9, 12);
 const page6 = letterMessages.slice(12, 14);
 const testPage = testMessages.slice(0, 1);
-const pagess = [page1, page2, page3, page4, page5, page6];
-const pages = [testPage];
+const pages = [page1, page2, page3, page4, page5, page6];
+const pagess = [testPage];
 
 // states
 let letterOpened = false;
@@ -248,6 +249,8 @@ back.addEventListener("click", () => {
 
 // cake blowing
 let cakeLoaded = false;
+let cakeHint;
+
 blowCake.addEventListener("click", () => {
   if (!letterFinished) {
     return;
@@ -261,6 +264,10 @@ blowCake.addEventListener("click", () => {
   setTimeout(startRising, 1000);
   setTimeout(() => {
     cakeLoaded = true;
+    cakeHint = setTimeout(() => {
+      cakeMessage.classList.add("flash");
+      cakeMessage.innerText = "BLOW HARDERRR!!";
+    }, 2000);
   }, 3000);
 });
 
@@ -268,9 +275,12 @@ function blowOutCandles() {
   console.log("detected blow");
   if (!cakeLoaded) {
     console.log("cant blow yet");
-
     return;
   }
+
+  clearTimeout(cakeHint);
+  cakeMessage.classList.add("hidden");
+  cakeMessage.classList.remove("flash");
 
   const candles = [oneCandle, eightCandle];
   candles.forEach((candle) => {
@@ -282,8 +292,8 @@ function blowOutCandles() {
   });
 
   setTimeout(() => {
-    const subTitle = document.querySelector(".cake-message");
-    subTitle.textContent = `Yayy! HAVE A FUN DAY TODAY!!!! I LOVE YOU <333`;
+    cakeMessage.classList.remove("hidden");
+    cakeMessage.textContent = `Yayy! HAVE A FUN DAY TODAY!!!! I LOVE YOU <333`;
   }, 2000);
 }
 
